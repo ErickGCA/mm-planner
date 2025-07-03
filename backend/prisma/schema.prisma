@@ -6,3 +6,59 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model User {
+  id           String         @id @default(uuid())
+  email        String         @unique
+  name         String?
+  password     String
+  role         Role           @default(USER)
+  routes       Route[]
+  destinations Destination[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Route {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  user        User        @relation(fields: [userId], references: [id])
+  userId      String
+  stops       RouteStop[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Destination {
+  id          String      @id @default(uuid())
+  name        String
+  latitude    Float
+  longitude   Float
+  user        User        @relation(fields: [userId], references: [id])
+  userId      String
+  routeStops  RouteStop[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model RouteStop {
+  id            String       @id @default(uuid())
+  order         Int
+  route         Route        @relation(fields: [routeId], references: [id])
+  routeId       String
+  destination   Destination  @relation(fields: [destinationId], references: [id])
+  destinationId String
+
+  // pssivel armazenamento de tempo, evitando recalcular
+  //distance      Float?
+  //duration      Float? 
+
+  createdAt     DateTime     @default(now())
+  @@unique([routeId, destinationId])
+}
