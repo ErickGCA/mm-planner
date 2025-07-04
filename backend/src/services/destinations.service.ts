@@ -1,6 +1,5 @@
 import { prisma } from '../config/database';
 
-// Tipo para criação de destino
 type DestinationCreationData = {
   name: string;
   description?: string;
