@@ -1,5 +1,6 @@
 import { Request, Response, RequestHandler } from 'express';
 import { routeService } from '../services/route.service';
+import { googleMapsService } from '../services/google-maps.service';
 import { sanitizeInput } from '../utils/validators';
 
 function getUserId(req: Request): string {
@@ -148,6 +149,49 @@ export const routeController = {
       }
       if (error.message === 'Unauthorized') {
         res.status(401).json({ message: 'Unauthorized' });
+        return;
+      }
+      res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+  }) as RequestHandler,
+
+  calculateDistance: (async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const userId = getUserId(req);
+      
+      const route = await routeService.getById(id, userId);
+      
+      if (!route.stops || route.stops.length < 2) {
+        res.status(400).json({ message: 'A rota deve ter pelo menos 2 destinos para calcular distância' });
+        return;
+      }
+
+      const destinations = route.stops
+        .sort((a, b) => a.order - b.order)
+        .map(stop => ({
+          latitude: stop.destination.latitude,
+          longitude: stop.destination.longitude
+        }));
+
+      const result = await googleMapsService.calculateRouteDistance(destinations);
+      
+      res.status(200).json({
+        routeId: id,
+        routeName: route.name,
+        ...result
+      });
+    } catch (error: any) {
+      if (error.message === 'Route not found') {
+        res.status(404).json({ message: error.message });
+        return;
+      }
+      if (error.message === 'Unauthorized') {
+        res.status(401).json({ message: 'Unauthorized' });
+        return;
+      }
+      if (error.message.includes('Google Maps API')) {
+        res.status(500).json({ message: 'Erro ao calcular distância. Verifique a API key do Google Maps.' });
         return;
       }
       res.status(500).json({ message: 'Erro interno do servidor' });
