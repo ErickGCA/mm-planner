@@ -54,8 +54,8 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/health`);
+  console.log(`Server running on port (●'◡'●) ${PORT}`);
+  console.log(`Health check: http://localhost:${PORT}/health`);
 });
 
 export default app;
