@@ -134,38 +134,41 @@ export const destinationSchema: ValidationSchema = {
     minLength: 2,
     maxLength: 200
   },
-  description: {
+  latitude: {
+    required: true,
+    type: 'number',
+    custom: (value) => {
+      return value >= -90 && value <= 90 || 'Latitude deve estar entre -90 e 90';
+    }
+  },
+  longitude: {
+    required: true,
+    type: 'number',
+    custom: (value) => {
+      return value >= -180 && value <= 180 || 'Longitude deve estar entre -180 e 180';
+    }
+  }
+};
+
+export const destinationUpdateSchema: ValidationSchema = {
+  name: {
     required: false,
     type: 'string',
-    maxLength: 1000
-  },
-  location: {
-    required: true,
-    type: 'string',
     minLength: 2,
-    maxLength: 300
+    maxLength: 200
   },
-  budget: {
+  latitude: {
     required: false,
     type: 'number',
     custom: (value) => {
-      return value >= 0 || 'Orçamento deve ser um valor positivo';
+      return value >= -90 && value <= 90 || 'Latitude deve estar entre -90 e 90';
     }
   },
-  startDate: {
+  longitude: {
     required: false,
-    type: 'string',
+    type: 'number',
     custom: (value) => {
-      const date = new Date(value);
-      return !isNaN(date.getTime()) || 'Data de início deve ser uma data válida';
-    }
-  },
-  endDate: {
-    required: false,
-    type: 'string',
-    custom: (value) => {
-      const date = new Date(value);
-      return !isNaN(date.getTime()) || 'Data de fim deve ser uma data válida';
+      return value >= -180 && value <= 180 || 'Longitude deve estar entre -180 e 180';
     }
   }
 };
