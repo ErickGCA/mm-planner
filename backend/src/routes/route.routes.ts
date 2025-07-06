@@ -330,25 +330,21 @@
 import { Router } from 'express';
 import { routeController } from '../controllers/route.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
-// (Opcional: importar validações se desejar)
 
 const routeRouter = Router();
 
 routeRouter.use(authMiddleware);
 
-// CRUD de rotas
 routeRouter.post('/', routeController.create);
 routeRouter.get('/', routeController.getAll);
 routeRouter.get('/:id', routeController.getById);
 routeRouter.put('/:id', routeController.update);
 routeRouter.delete('/:id', routeController.delete);
 
-// RouteStops
-routeRouter.post('/:id/stops', routeController.addStops); // Adiciona vários destinos de uma vez
-routeRouter.delete('/:id/stops/:destinationId', routeController.removeStop); // Remove destino da rota
-routeRouter.patch('/:id/stops/reorder', routeController.reorderStops); // Reordena stops
+routeRouter.post('/:id/stops', routeController.addStops);
+routeRouter.delete('/:id/stops/:destinationId', routeController.removeStop);
+routeRouter.patch('/:id/stops/reorder', routeController.reorderStops);
 
-// Cálculo de distância
-routeRouter.get('/:id/distance', routeController.calculateDistance); // Calcula distância e tempo da rota
+routeRouter.get('/:id/distance', routeController.calculateDistance);
 
 export default routeRouter; 

@@ -20,6 +20,7 @@ services:
     ports:
       - "3333:3333"
     environment:
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
       - JWT_SECRET=${JWT_SECRET}
       - DATABASE_URL=${DATABASE_URL}
       - PORT=3333

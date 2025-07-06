@@ -9,6 +9,13 @@ const options = {
       description: 'Documentação da API do Travel Planner',
     },
     components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      },
       schemas: {
         RegisterUser: {
           type: 'object',
@@ -29,6 +36,9 @@ const options = {
         },
       },
     },
+    security: [
+      { bearerAuth: [] }
+    ],
   },
   apis: ['src/routes/*.ts', 'src/controllers/*.ts'], 
 };

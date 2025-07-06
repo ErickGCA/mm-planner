@@ -6,7 +6,7 @@ const authRouter = Router();
 
 /**
  * @swagger
- * /auth/register:
+ * /api/auth/register:
  *   post:
  *     summary: Registra um novo usuário
  *     tags: [Auth]
@@ -26,7 +26,7 @@ authRouter.post('/register', validate(registerSchema), authController.register);
 
 /**
  * @swagger
- * /auth/login:
+ * /api/auth/login:
  *   post:
  *     summary: Realiza login do usuário
  *     tags: [Auth]
