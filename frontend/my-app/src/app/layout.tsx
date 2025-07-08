@@ -4,7 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Travel Planner',
+  title: 'MM Planner',
   description: 'Your personal travel planning app',
 };
 

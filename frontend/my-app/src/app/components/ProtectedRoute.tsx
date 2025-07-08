@@ -50,7 +50,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
         justifyContent: 'center', 
         alignItems: 'center', 
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #292a2c 0%, #421e66 100%)',
+        backgroundColor: '#ffffff',
         color: 'white'
       }}>
         <div style={{ textAlign: 'center' }}>

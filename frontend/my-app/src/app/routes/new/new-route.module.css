@@ -1,0 +1,33 @@
+.pageWrapper {
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding: 20px;
+}
+
+.cardContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid #7a0909;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #333333;
+}
+
+.headerTitle {
+  margin: 0;
+  color: #7a0909;
+  background-color: #7a0909;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+} 

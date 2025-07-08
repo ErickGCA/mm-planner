@@ -11,6 +11,7 @@ import DestinationCard from '../components/DestinationCard';
 import Button from '../components/Button';
 import Link from 'next/link';
 import ProtectedRoute from '../components/ProtectedRoute';
+import styles from './destinations.module.css';
 
 const DestinationsPage: React.FC = () => {
   const router = useRouter();
@@ -84,69 +85,20 @@ const DestinationsPage: React.FC = () => {
   const DestinationsContent = () => {
     if (isLoading) {
       return (
-        <div style={{ 
-          textAlign: 'center', 
-          padding: '50px',
-          color: '#ffffff',
-          background: 'linear-gradient(135deg, #292a2c 0%, #421e66 100%)',
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
+        <div className={styles.loadingWrapper}>
           <div>
-            <h2 style={{ marginBottom: '20px' }}>Carregando seus destinos...</h2>
-            <div style={{
-              width: '40px',
-              height: '40px',
-              border: '4px solid rgba(176, 132, 219, 0.3)',
-              borderTop: '4px solid #b084db',
-              borderRadius: '50%',
-              animation: 'spin 1s linear infinite',
-              margin: '0 auto'
-            }}></div>
+            <h2 className={styles.loadingTitle}>Carregando seus destinos...</h2>
+            <div className={styles.spinner}></div>
           </div>
-          <style jsx>{`
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          `}</style>
         </div>
       );
     }
 
     return (
-      <div style={{ 
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #292a2c 0%, #421e66 100%)',
-        padding: '20px'
-      }}>
-        <div style={{ 
-          maxWidth: '800px', 
-          margin: '0 auto', 
-          padding: '30px',
-          background: 'rgba(20, 20, 20, 0.95)',
-          borderRadius: '20px',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
-          border: '1px solid rgba(176, 132, 219, 0.2)'
-        }}>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center', 
-            marginBottom: '30px',
-            paddingBottom: '20px',
-            borderBottom: '1px solid #333333'
-          }}>
-            <h2 style={{ 
-              margin: 0, 
-              color: '#ffffff',
-              background: 'linear-gradient(45deg, #b084db, #8a2be2)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
-            }}>
+      <div className={styles.pageWrapper}>
+        <div className={styles.cardContainer}>
+          <div className={styles.headerRow}>
+            <h2 className={styles.headerTitle}>
               Gerenciar Meus Destinos
             </h2>
             <Link href="/dashboard" passHref>
@@ -155,14 +107,7 @@ const DestinationsPage: React.FC = () => {
           </div>
 
           {error && (
-            <div style={{ 
-              color: '#ff6b6b', 
-              background: 'rgba(255, 107, 107, 0.1)',
-              padding: '15px',
-              borderRadius: '8px',
-              borderLeft: '4px solid #ff6b6b',
-              marginBottom: '20px' 
-            }}>
+            <div className={styles.errorBox}>
               {error}
             </div>
           )}
@@ -178,34 +123,23 @@ const DestinationsPage: React.FC = () => {
             <Button 
               onClick={() => setEditingDestination(null)} 
               variant="outline"
-              style={{ marginBottom: '20px' }}
+              className={styles.cancelEditBtn}
             >
               Cancelar Edição
             </Button>
           )}
 
-          <h3 style={{ 
-            marginTop: '30px', 
-            marginBottom: '15px',
-            color: '#ffffff'
-          }}>
+          <h3 className={styles.listTitle}>
             Destinos Cadastrados
           </h3>
           
           {destinations.length === 0 ? (
-            <div style={{ 
-              textAlign: 'center', 
-              color: '#b0b0b0',
-              padding: '40px 20px',
-              background: 'rgba(30, 30, 30, 0.5)',
-              borderRadius: '12px',
-              border: '2px dashed #333333'
-            }}>
-              <h3 style={{ marginBottom: '10px', color: '#ffffff' }}>Nenhum destino encontrado</h3>
-              <p>Você ainda não tem nenhum destino cadastrado.</p>
+            <div className={styles.emptyBox}>
+              <h4 className={styles.emptyTitle}>Nenhum destino encontrado</h4>
+              <p>Você ainda não tem destinos cadastrados.</p>
             </div>
           ) : (
-            <div>
+            <div className={styles.destinationsGrid}>
               {destinations.map((destination) => (
                 <DestinationCard
                   key={destination.id}

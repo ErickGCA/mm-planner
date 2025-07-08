@@ -23,14 +23,14 @@ const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', ...props
       case 'primary':
         return {
           ...baseStyles,
-          background: 'linear-gradient(45deg, #40465f, #764ba2)',
+          background: '#7a0909',
           color: 'white',
           boxShadow: '0 4px 15px rgba(176, 132, 219, 0.3)',
         };
       case 'secondary':
         return {
           ...baseStyles,
-          background: 'linear-gradient(45deg, #b084db, #8a2be2)',
+          background: '#7a0909',
           color: 'white',
           boxShadow: '0 4px 15px rgba(176, 132, 219, 0.3)',
         };
@@ -38,8 +38,8 @@ const Button: React.FC<ButtonProps> = ({ children, variant = 'primary', ...props
         return {
           ...baseStyles,
           background: 'transparent',
-          color: '#b084db',
-          border: '2px solid #b084db',
+          color: '#7a0909',
+          border: '2px solid #7a0909',
           boxShadow: 'none',
         };
       default:

@@ -16,14 +16,14 @@ export default function Home() {
       justifyContent: 'center', 
       alignItems: 'center', 
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #292a2c 0%, #421e66 100%)'
+      backgroundColor: '#ffffff'
     }}>
       <div style={{ 
         textAlign: 'center', 
         color: 'white',
         animation: 'fadeIn 0.5s ease-in'
       }}>
-        <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>✈️</h1>
+        <img src="/logo-mm.png" alt="Logo" style={{ width: '300px', height: '300px' }} />
         <p>Redirecionando...</p>
       </div>
       <style jsx>{`

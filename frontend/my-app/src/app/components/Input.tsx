@@ -16,7 +16,7 @@ const Input: React.FC<InputProps> = ({ label, id, ...props }) => {
         style={{ 
           display: 'block', 
           marginBottom: '8px',
-          color: '#b084db',
+          color: '#7a0909',
           fontSize: '0.9rem',
           fontWeight: '600'
         }}
@@ -32,8 +32,8 @@ const Input: React.FC<InputProps> = ({ label, id, ...props }) => {
           boxSizing: 'border-box' as const,
           border: '2px solid #333333',
           borderRadius: '12px',
-          backgroundColor: 'rgba(30, 30, 30, 0.9)',
-          color: '#ffffff',
+          backgroundColor: '#ffffff',
+          color: '#111',
           fontSize: '1rem',
           transition: 'all 0.3s ease',
           outline: 'none',

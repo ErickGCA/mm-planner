@@ -16,7 +16,7 @@ const DestinationCard: React.FC<DestinationCardProps> = ({ destination, onEdit, 
       borderRadius: '8px',
       padding: '15px',
       marginBottom: '10px',
-      backgroundColor: '#fefefe',
+      backgroundColor: '#ffffff',
       boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
     }}>
       <h4 style={{ margin: '0 0 5px 0', color: '#333' }}>{destination.name}</h4>
