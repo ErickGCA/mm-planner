@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Input from './Input';
-import Button from './Button';
+import Link from 'next/link';
+import styles from '../auth/login/login.module.css';
 
 interface AuthFormProps {
   type: 'login' | 'register';
@@ -24,54 +24,91 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, isLoading, error })
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ padding: '20px', border: '1px solid #eee', borderRadius: '8px', maxWidth: '400px', margin: '50px auto', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>
-        {type === 'login' ? 'Login' : 'Registrar'}
-      </h2>
-
-      {type === 'register' && (
-        <Input
-          label="Nome"
-          id="name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      )}
-      <Input
-        label="Email"
-        id="email"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <Input
-        label="Senha"
-        id="password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-
-      {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
-
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? 'Carregando...' : (type === 'login' ? 'Entrar' : 'Registrar')}
-      </Button>
-
-      {type === 'login' ? (
-        <p style={{ textAlign: 'center', marginTop: '15px' }}>
-          Não tem uma conta? <a href="/auth/register" style={{ color: '#007bff', textDecoration: 'none' }}>Registre-se aqui</a>
+    <div className={styles.container}>
+      <div className={styles.formContainer}>
+        <h1 className={styles.title}>
+          {type === 'login' ? 'Bem-vindo de volta!' : 'Crie sua conta'}
+        </h1>
+        <p className={styles.subtitle}>
+          {type === 'login' 
+            ? 'Entre com suas credenciais para acessar sua conta' 
+            : 'Preencha os dados abaixo para criar sua conta'
+          }
         </p>
-      ) : (
-        <p style={{ textAlign: 'center', marginTop: '15px' }}>
-          Já tem uma conta? <a href="/auth/login" style={{ color: '#007bff', textDecoration: 'none' }}>Faça login aqui</a>
-        </p>
-      )}
-    </form>
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          {type === 'register' && (
+            <div className={styles.inputGroup}>
+              <label htmlFor="name" className={styles.label}>Nome completo</label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={styles.input}
+                placeholder="Digite seu nome completo"
+                required
+              />
+            </div>
+          )}
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="email" className={styles.label}>Email</label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={styles.input}
+              placeholder="Digite seu email"
+              required
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label htmlFor="password" className={styles.label}>Senha</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={styles.input}
+              placeholder="Digite sua senha"
+              required
+            />
+          </div>
+
+          {error && <div className={styles.error}>{error}</div>}
+
+          <button type="submit" className={styles.button} disabled={isLoading}>
+            <span className={styles.buttonText}>
+              {isLoading ? (
+                <>
+                  <span className={styles.loading}></span>
+                  Carregando...
+                </>
+              ) : (
+                type === 'login' ? 'Entrar' : 'Criar conta'
+              )}
+            </span>
+          </button>
+        </form>
+
+        <div className={styles.link}>
+          {type === 'login' ? (
+            <>
+              Não tem uma conta?{' '}
+              <Link href="/auth/register">Registre-se aqui</Link>
+            </>
+          ) : (
+            <>
+              Já tem uma conta?{' '}
+              <Link href="/auth/login">Faça login aqui</Link>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

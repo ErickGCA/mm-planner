@@ -1,18 +1,37 @@
-import Link from 'next/link';
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push('/auth/login');
+  }, [router]);
+
   return (
-    <div style={{ textAlign: 'center', padding: '50px' }}>
-      <h1>Bem-vindo ao Travel Planner!</h1>
-      <p>Planeje suas viagens e rotas de forma fácil e eficiente.</p>
-      <div style={{ marginTop: '30px' }}>
-        <Link href="/auth/login" style={{ marginRight: '20px', padding: '10px 20px', backgroundColor: '#007bff', color: 'white', textDecoration: 'none', borderRadius: '4px' }}>
-          Fazer Login
-        </Link>
-        <Link href="/auth/register" style={{ padding: '10px 20px', backgroundColor: '#28a745', color: 'white', textDecoration: 'none', borderRadius: '4px' }}>
-          Registrar-se
-        </Link>
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #292a2c 0%, #421e66 100%)'
+    }}>
+      <div style={{ 
+        textAlign: 'center', 
+        color: 'white',
+        animation: 'fadeIn 0.5s ease-in'
+      }}>
+        <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>✈️</h1>
+        <p>Redirecionando...</p>
       </div>
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }

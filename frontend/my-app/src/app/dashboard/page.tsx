@@ -66,42 +66,135 @@ const DashboardPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div style={{ textAlign: 'center', padding: '50px' }}>
-        <p>Carregando suas rotas...</p>
+      <div style={{ 
+        textAlign: 'center', 
+        padding: '50px',
+        color: '#ffffff',
+        background: 'linear-gradient(135deg, #292a2c 0%, #421e66 100%)',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <div>
+          <h2 style={{ marginBottom: '20px' }}>Carregando suas rotas...</h2>
+          <div style={{
+            width: '40px',
+            height: '40px',
+            border: '4px solid rgba(176, 132, 219, 0.3)',
+            borderTop: '4px solid #b084db',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto'
+          }}></div>
+        </div>
+        <style jsx>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '800px', margin: '20px auto', padding: '20px', border: '1px solid #eee', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2 style={{ margin: 0 }}>Bem-vindo, {userName || 'Usuário'}!</h2>
-        <Button onClick={handleLogout} style={{ backgroundColor: '#6c757d' }}>Sair</Button>
-      </div>
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h3 style={{ margin: 0 }}>Minhas Rotas</h3>
-        <Link href="/routes/new" passHref>
-          <Button>Criar Nova Rota</Button>
-        </Link>
-      </div>
-
-      {error && <p style={{ color: 'red', marginBottom: '20px' }}>{error}</p>}
-
-      {routes.length === 0 ? (
-        <p style={{ textAlign: 'center', color: '#555' }}>Você ainda não tem nenhuma rota. Que tal criar uma?</p>
-      ) : (
-        <div style={{ display: 'grid', gap: '15px' }}>
-          {routes.map((route) => (
-            <RouteCard key={route.id} route={route} onDelete={handleDeleteRoute} />
-          ))}
+    <div style={{ 
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #292a2c 0%, #421e66 100%)',
+      padding: '20px'
+    }}>
+      <div style={{ 
+        maxWidth: '800px', 
+        margin: '0 auto', 
+        padding: '30px',
+        background: 'rgba(20, 20, 20, 0.95)',
+        borderRadius: '20px',
+        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+        border: '1px solid rgba(176, 132, 219, 0.2)'
+      }}>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          marginBottom: '30px',
+          paddingBottom: '20px',
+          borderBottom: '1px solid #333333'
+        }}>
+          <h2 style={{ 
+            margin: 0, 
+            color: '#ffffff',
+            background: 'linear-gradient(45deg, #b084db, #8a2be2)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}>
+            Bem-vindo, {userName || 'Usuário'}!
+          </h2>
+          <Button variant="outline" onClick={handleLogout}>Sair</Button>
         </div>
-      )}
 
-      <div style={{ marginTop: '30px', textAlign: 'center' }}>
-        <Link href="/destinations" passHref>
-          <Button style={{ backgroundColor: '#17a2b8' }}>Gerenciar Meus Destinos</Button>
-        </Link>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          marginBottom: '30px' 
+        }}>
+          <h3 style={{ 
+            margin: 0, 
+            color: '#ffffff',
+            fontSize: '1.5rem'
+          }}>
+            Minhas Rotas
+          </h3>
+          <Link href="/routes/new" passHref>
+            <Button variant="secondary">Criar Nova Rota</Button>
+          </Link>
+        </div>
+
+        {error && (
+          <div style={{ 
+            color: '#ff6b6b', 
+            background: 'rgba(255, 107, 107, 0.1)',
+            padding: '15px',
+            borderRadius: '8px',
+            borderLeft: '4px solid #ff6b6b',
+            marginBottom: '20px' 
+          }}>
+            {error}
+          </div>
+        )}
+
+        {routes.length === 0 ? (
+          <div style={{ 
+            textAlign: 'center', 
+            color: '#b0b0b0',
+            padding: '40px 20px',
+            background: 'rgba(30, 30, 30, 0.5)',
+            borderRadius: '12px',
+            border: '2px dashed #333333'
+          }}>
+            <h3 style={{ marginBottom: '10px', color: '#ffffff' }}>Nenhuma rota encontrada</h3>
+            <p>Você ainda não tem nenhuma rota. Que tal criar uma?</p>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gap: '20px' }}>
+            {routes.map((route) => (
+              <RouteCard key={route.id} route={route} onDelete={handleDeleteRoute} />
+            ))}
+          </div>
+        )}
+
+        <div style={{ 
+          marginTop: '40px', 
+          textAlign: 'center',
+          paddingTop: '30px',
+          borderTop: '1px solid #333333'
+        }}>
+          <Link href="/destinations" passHref>
+            <Button variant="primary">Gerenciar Meus Destinos</Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
