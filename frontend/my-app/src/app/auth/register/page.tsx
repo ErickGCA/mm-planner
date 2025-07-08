@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AuthForm from '../../components/AuthForm';
 import { authService } from '../../services/auth.services';
+import styles from './register.module.css';
 
 const RegisterPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);

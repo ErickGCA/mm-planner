@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AuthForm from '../../components/AuthForm';
 import { authService } from '../../services/auth.services';
+import styles from './login.module.css';
 
 const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);

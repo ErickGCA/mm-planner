@@ -7,19 +7,20 @@ const Footer: React.FC = () => {
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.section}>
-            <h3 className={styles.title}>Travel Planner</h3>
-            <p className={styles.description}>
-              Planeje suas viagens de forma inteligente e eficiente. 
-              Descubra novos destinos e crie rotas incríveis.
-            </p>
+          <a href="/auth/login">
+          <img src="/footer-xicoria.webp" alt="Xicoria" className={styles.logoImage} />
+          <div className={styles.titleBox}>
+            <img src="/logo-mm.png" alt="Logo Travel Planner" className={styles.title} />
+          </div>
+          </a>
           </div>
           
           <div className={styles.section}>
             <h4 className={styles.subtitle}>Links Úteis</h4>
             <ul className={styles.links}>
-              <li><a href="/auth/login" className={styles.link}>Entrar</a></li>
-              <li><a href="/auth/register" className={styles.link}>Registrar</a></li>
-              <li><a href="/dashboard" className={styles.link}>Dashboard</a></li>
+              <li><a href="/auth/login" className={styles.link}>Instagram</a></li>
+              <li><a href="/auth/register" className={styles.link}>Site Oficial</a></li>
+              <li><a href="/dashboard" className={styles.link}>Linkedin</a></li>
             </ul>
           </div>
           
@@ -28,11 +29,11 @@ const Footer: React.FC = () => {
             <ul className={styles.links}>
               <li className={styles.contactItem}>
                 <span className={styles.contactIcon}>📧</span>
-                contato@travelplanner.com
+                contato@lojasmm.com
               </li>
               <li className={styles.contactItem}>
                 <span className={styles.contactIcon}>📱</span>
-                +55 (11) 99999-9999
+                +55 (42) 99164-2325
               </li>
             </ul>
           </div>
@@ -40,7 +41,7 @@ const Footer: React.FC = () => {
         
         <div className={styles.bottom}>
           <p className={styles.copyright}>
-            © 2025 Travel Planner. Todos os direitos reservados.
+            © 2025 MM Planner. Todos os direitos reservados.
           </p>
           <div className={styles.social}>
             <a href="#" className={styles.socialLink} aria-label="Facebook">

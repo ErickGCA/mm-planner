@@ -1,5 +1,5 @@
 .header {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d1b69 100%);
+  background-color: #890302;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
   position: sticky;
   top: 0;
@@ -53,6 +53,12 @@
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-5px); }
+}
+
+
+.logoImage {
+  height: 250px; 
+  object-fit: contain;
 }
 
 .nav {
