@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Input from './Input';
 import Button from './Button';
-import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import DraggableDestinationItem from './DraggableDestinationItem';
 import { Destination, Route, RouteStopInput } from '../services/route.service';
 import { destinationService } from '../services/destination.service';

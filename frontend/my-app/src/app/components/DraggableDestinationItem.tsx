@@ -1,5 +1,5 @@
 import React from 'react';
-import { DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
+import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
 import { Destination } from '../services/route.service';
 import Button from './Button';
 
