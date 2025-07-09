@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import 'leaflet/dist/leaflet.css';
 
 export const metadata: Metadata = {
   title: 'MM Planner',
@@ -15,6 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
+      <head>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+      </head>
       <body>
         <div style={{ 
           display: 'flex', 

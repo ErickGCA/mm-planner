@@ -85,7 +85,7 @@ const RouteForm: React.FC<RouteFormProps> = ({ initialData, onSubmit, isLoading,
   );
 
   return (
-    <form onSubmit={handleSubmit} style={{ padding: '20px', border: '1px solid #eee', borderRadius: '8px', maxWidth: '800px', margin: '20px auto', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
+    <form onSubmit={handleSubmit} style={{ padding: '20px', border: '1px solid #eee', borderRadius: '8px', maxWidth: '800px', margin: '20px auto', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', color: '#7a0909'}}>
       <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>
         {initialData ? `Editar Rota: ${initialData.name}` : 'Criar Nova Rota'}
       </h2>
@@ -106,7 +106,7 @@ const RouteForm: React.FC<RouteFormProps> = ({ initialData, onSubmit, isLoading,
         onChange={(e) => setRouteDescription(e.target.value)}
       />
 
-      <div style={{ marginTop: '20px', padding: '15px', border: '1px dashed #ccc', borderRadius: '4px' }}>
+      <div style={{ marginTop: '20px', padding: '15px', border: '1px dashed #ccc', borderRadius: '4px', color: '#7a0909'}}>
         <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Adicionar Destinos à Rota</h3>
         <Input
           label="Buscar Destinos Existentes"
@@ -120,7 +120,7 @@ const RouteForm: React.FC<RouteFormProps> = ({ initialData, onSubmit, isLoading,
           id="available-destinations-select"
           value={selectedDestinationToAdd}
           onChange={(e) => setSelectedDestinationToAdd(e.target.value)}
-          style={{ width: '100%', padding: '8px', marginBottom: '10px', marginTop: '10px' }}
+          style={{ width: '100%', padding: '8px', marginBottom: '10px', marginTop: '10px', }}
         >
           <option value="">Selecione um destino</option>
           {filteredAvailableDestinations.map((dest) => (
@@ -129,7 +129,7 @@ const RouteForm: React.FC<RouteFormProps> = ({ initialData, onSubmit, isLoading,
             </option>
           ))}
         </select>
-        <Button type="button" onClick={handleAddDestination} disabled={!selectedDestinationToAdd}>
+        <Button type="button" onClick={handleAddDestination} disabled={!selectedDestinationToAdd} style={{ color: '#7a0909'}}>
           Adicionar Destino à Rota
         </Button>
       </div>
@@ -145,7 +145,7 @@ const RouteForm: React.FC<RouteFormProps> = ({ initialData, onSubmit, isLoading,
               <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
-                style={{ minHeight: '50px', backgroundColor: '#333', padding: '8px', borderRadius: '4px' }}
+                style={{ minHeight: '50px', backgroundColor: '#ffff', padding: '8px', borderRadius: '4px' }}
               >
                 {selectedDestinations.map((dest, index) => (
                   <Draggable key={dest.id} draggableId={dest.id} index={index}>
