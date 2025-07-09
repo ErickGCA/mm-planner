@@ -50,6 +50,7 @@ export interface RouteCalculationResult {
   routeName: string;
   totalDistance: string;
   totalDuration: string;
+  encodedPolyline: string;
   totalDistanceValue: number;
   totalDurationValue: number;
   segments: {

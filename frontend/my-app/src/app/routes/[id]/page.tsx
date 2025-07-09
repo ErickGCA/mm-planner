@@ -1,5 +1,7 @@
 "use client";
 
+import polyline from '@mapbox/polyline';
+
 import React, { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from 'next/dynamic';
@@ -8,6 +10,7 @@ import Button from "../../components/Button";
 import Link from "next/link";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import styles from "./details-route.module.css";
+
 
 const RouteMap = dynamic(() => import('../../components/RouteMap'), {
   ssr: false,
@@ -39,36 +42,40 @@ const RouteDetailsPage: React.FC<RouteDetailsPageProps> = ({ params }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const fetchedRoute = await routeService.getRouteById(routeId);
-        setRouteData(fetchedRoute);
-        const calc = await routeService.calculateRoute(routeId);
-        setCalculation(calc);
-        
-        if (fetchedRoute && fetchedRoute.stops.length > 1) {
-          const sortedStops = [...fetchedRoute.stops].sort((a, b) => a.order - b.order);
-          const coordinates = sortedStops.map(stop => `${stop.destination.longitude},${stop.destination.latitude}`).join(';');
-          const response = await fetch(`https://router.project-osrm.org/route/v1/driving/${coordinates}?geometries=geojson`);
-          const data = await response.json();
-          if (data.routes && data.routes.length > 0) {
-            const path = data.routes[0].geometry.coordinates.map((coord: [number, number]) => [coord[1], coord[0]]);
-            setRoutePath(path);
-          }
-        }
-      } catch (err: any) {
-        setError(err.message || "Erro ao carregar detalhes da rota.");
-        if (err.message?.includes("Unauthorized") || err.message?.includes("Route not found")) {
-          router.push("/dashboard");
-        }
-      } finally {
-        setIsLoading(false);
+// Lembre-se de ter o decodificador instalado: npm install @mapbox/polyline
+
+
+// ...
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
+      const fetchedRoute = await routeService.getRouteById(routeId);
+      setRouteData(fetchedRoute);
+
+      // 1. Unica chamada para sua API do Google
+      const calcResult = await routeService.calculateRoute(routeId);
+      setCalculation(calcResult);
+      
+      // 2. Decodifica a linha recebida do Google e atualiza o mapa
+      if (calcResult && calcResult.encodedPolyline) {
+        const decodedPath = polyline.decode(calcResult.encodedPolyline) as [number, number][];
+        setRoutePath(decodedPath);
       }
-    };
-    if (routeId) fetchData();
-  }, [routeId, router]);
+      
+    } catch (err: any) {
+      setError(err.message || "Erro ao carregar detalhes da rota.");
+      if (err.message?.includes("Unauthorized") || err.message?.includes("Route not found")) {
+        router.push("/dashboard");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (routeId) fetchData();
+}, [routeId, router]);
 
   const handleDelete = async () => {
     if (!window.confirm("Tem certeza que deseja excluir esta rota?")) return;
