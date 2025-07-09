@@ -1,48 +1,64 @@
 # Travel Planner
 
-Aplicação de planejamento de viagens com API REST e interface web.
+Sistema de planejamento de rotas de viagem.
 
-## 🚀 Tecnologias
+Este projeto permite que usuários cadastrem destinos, criem rotas personalizadas, reorganizem destinos, visualizem distâncias e tempos de viagem entre destinos usando a API do Google Maps, e gerenciem suas viagens de forma prática.
 
-- **Backend**: Node.js, Express, TypeScript, Prisma
-- **Database**: PostgreSQL
-- **Frontend**: React (em desenvolvimento)
-- **Documentação**: Swagger UI
-- **Containerização**: Docker & Docker Compose
+## Estrutura do Projeto
 
-## 📋 Pré-requisitos
+- `backend/` - API Node.js (Express + Prisma)
+- `frontend/` - Aplicação web (Next.js + React)
 
-- Docker
-- Docker Compose
+## Requisitos
 
-## 🛠️ Como executar
+- Node.js 18+
+- Docker (opcional, para rodar com docker-compose)
+- API Key do Google Maps 
+- Banco de dados PostgreSQL (ou SQLite para testes)
 
-1. Clone o repositório
-2. Configure as variáveis de ambiente (crie um arquivo `.env` na raiz)
-3. Execute o projeto:
+## Como rodar o projeto
 
-```bash
-docker compose up
-```
+### 1. Clone o repositório
 
-## 🔗 Endpoints
+    git clone https://github.com/ErickGCA/travel-planner.git
+    cd travel-planner
 
-- **API**: http://localhost:3333
-- **Health Check**: http://localhost:3333/health
-- **Documentação**: http://localhost:3333/api-docs
+### 2. Configure as variáveis de ambiente
 
-## 📁 Estrutura do Projeto
+Crie os arquivos `.env` em `backend/` e `frontend/my-app/` conforme os exemplos fornecidos.
 
-```
-travel-planner/
-├── backend/          # API REST com Node.js/Express
-├── frontend/         # Interface React (em desenvolvimento)
-└── docker-compose.yml
-```
+### 3. Suba o banco de dados (opcional)
 
-## 🚧 Status
+    docker-compose up -d
 
-- ✅ Backend API funcionando
-- ✅ Banco de dados configurado
-- ✅ Documentação Swagger
-- 🚧 Frontend em desenvolvimento 
+### 4. Rode o backend
+
+    cd backend
+    npm install
+    npx prisma migrate dev
+    npm run dev
+
+### 5. Rode o frontend
+
+    cd frontend/my-app
+    npm install
+    npm run dev
+
+Acesse o frontend em http://localhost:3000
+
+## Funcionalidades principais
+
+- Cadastro e login de usuários
+- CRUD de destinos
+- CRUD de rotas
+- Reordenação de destinos nas rotas (drag-and-drop)
+- Cálculo de distância e tempo total da rota (Google Maps API)
+- Visualização e gerenciamento de rotas e destinos
+
+## Estrutura de pastas
+
+    travel-planner/
+      backend/      # API Node.js
+      frontend/     # Frontend Next.js
+
+Consulte os READMEs de cada subpasta para detalhes específicos. 

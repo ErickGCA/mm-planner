@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 
 export const metadata: Metadata = {
   title: 'MM Planner',
-  description: 'Your personal travel planning app',
+  description: 'Planejador de viagens',
 };
 
 export default function RootLayout({
