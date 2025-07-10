@@ -20,23 +20,42 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const token = authService.getToken();
-        const user = authService.getUser();
-
-        if (!token || !user) {
+        const isAuth = authService.isAuthenticated();
+        
+        if (!isAuth) {
           setIsAuthenticated(false);
-          router.push('/auth/login');
+          setIsLoading(false);
+          authService.logout();
+          router.replace('/auth/login');
           return;
         }
-       
+
+        try {
+          const isValid = await Promise.race([
+            authService.validateToken(),
+            new Promise<boolean>((resolve) => 
+              setTimeout(() => resolve(false), 5000) 
+            )
+          ]);
+          
+          if (!isValid) {
+            setIsAuthenticated(false);
+            setIsLoading(false);
+            authService.logout();
+            router.replace('/auth/login');
+            return;
+          }
+        } catch (validationError) {
+          console.error('Erro na validação do token:', validationError);
+        }
+
         setIsAuthenticated(true);
-      } catch (error) {
-        console.error('Auth check error:', error);
-        setIsAuthenticated(false);
-        authService.logout();
-        router.push('/auth/login');
-      } finally {
         setIsLoading(false);
+      } catch (error) {
+        setIsAuthenticated(false);
+        setIsLoading(false);
+        authService.logout();
+        router.replace('/auth/login');
       }
     };
 
@@ -51,7 +70,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
         alignItems: 'center', 
         minHeight: '100vh',
         backgroundColor: '#ffffff',
-        color: 'white'
+        color: '#333'
       }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{

@@ -1,4 +1,3 @@
-
 import { api } from '../lib/api';
 
 export interface Destination {
@@ -45,22 +44,17 @@ export interface RouteStopInput {
   order: number;
 }
 
-export interface RouteCalculationResult {
-  routeId: string;
-  routeName: string;
-  totalDistance: string;
-  totalDuration: string;
+export interface RouteLeg {
+  distance: string;
+  duration: string;
   encodedPolyline: string;
-  totalDistanceValue: number;
-  totalDurationValue: number;
-  segments: {
-    distance: string;
-    duration: string;
-    distanceValue: number;
-    durationValue: number;
-  }[];
 }
 
+export interface RouteCalculationResult {
+  totalDistance: string;
+  totalDuration: string;
+  legs: RouteLeg[];
+}
 
 export const routeService = {
   async createRoute(data: RouteCreationData): Promise<Route> {

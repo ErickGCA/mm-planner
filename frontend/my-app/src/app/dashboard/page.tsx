@@ -29,11 +29,6 @@ const DashboardPage: React.FC = () => {
         setRoutes(fetchedRoutes);
       } catch (err: any) {
         setError(err.message || 'Erro ao carregar rotas.');
-        console.error('Erro ao carregar rotas:', err);
-        if (err.message.includes('Unauthorized')) {
-          authService.logout();
-          router.push('/auth/login');
-        }
       } finally {
         setIsLoading(false);
       }

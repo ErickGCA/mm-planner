@@ -32,15 +32,17 @@ services:
       
   #frontend:
    # container_name: trip_planner_frontend
-   # build:
-    #  context: ./frontend
-    #ports:
-     # - "3000:3000"
-    #volumes:
-     # - ./frontend:/app
-      #- /app/node_modules
-    #depends_on:
-     # - api
+    # build:
+    #  context: ./frontend/my-app
+    # ports:
+    #  - "3000:3000"
+    # environment:
+    #  - NEXT_PUBLIC_API_URL=http://api:3333
+    # volumes:
+    #  - ./frontend/my-app:/usr/src/app
+    #  - /usr/src/app/node_modules
+    # depends_on:
+    #  - api
 
 volumes:
   postgres_data:

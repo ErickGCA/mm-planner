@@ -134,7 +134,7 @@ const RouteForm: React.FC<RouteFormProps> = ({ initialData, onSubmit, isLoading,
         </Button>
       </div>
 
-      <div style={{ marginTop: '20px', padding: '15px', border: '1px dashed #ccc', borderRadius: '4px' }}>
+      <div style={{ marginTop: '20px', padding: '15px', border: '1px dashed #ccc', borderRadius: '4px', backgroundColor: '#ffffff'}}>
         <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Destinos na Rota (Arraste para reordenar)</h3>
         {selectedDestinations.length === 0 && (
           <p style={{ textAlign: 'center', color: '#888' }}>Nenhum destino adicionado ainda. Adicione um acima!</p>

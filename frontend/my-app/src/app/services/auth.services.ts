@@ -42,8 +42,15 @@ export const authService = {
   },
 
   logout() {
+    // Limpar completamente o cache
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    sessionStorage.clear();
+    
+    // Limpar cookies se houver
+    document.cookie.split(";").forEach(function(c) { 
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+    });
   },
 
   getToken(): string | null {
@@ -61,5 +68,24 @@ export const authService = {
 
   setUser(user: any) {
     localStorage.setItem('user', JSON.stringify(user));
+  },
+
+  isAuthenticated(): boolean {
+    const token = this.getToken();
+    const user = this.getUser();
+    return !!(token && user);
+  },
+
+  async validateToken(): Promise<boolean> {
+    try {
+      const token = this.getToken();
+      if (!token) return false;
+      
+      // Fazer uma requisição para validar o token
+      await api.get('/auth/validate');
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 };

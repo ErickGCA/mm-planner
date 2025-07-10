@@ -20,7 +20,7 @@ Aplicação web para planejamento de rotas de viagem.
 
 3. Inicie o frontend:
 
-    npm run dev
+npm run dev
 
 Acesse em http://localhost:3000
 

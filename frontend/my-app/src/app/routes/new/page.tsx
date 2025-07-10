@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -32,10 +31,6 @@ const NewRoutePage: React.FC = () => {
     } catch (err: any) {
       setError(err.message || 'Erro ao criar a rota.');
       console.error('Erro ao criar rota:', err);
-      if (err.message.includes('Unauthorized')) {
-        authService.logout();
-        router.push('/auth/login');
-      }
     } finally {
       setIsLoading(false);
     }

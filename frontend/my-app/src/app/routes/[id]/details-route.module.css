@@ -61,4 +61,8 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.resumoTrajeto {
+  color: #7a0909 !important;
 } 

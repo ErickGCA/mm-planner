@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { authService } from '../../../services/auth.services';
 import { routeService, Route, RouteStopInput } from '../../../services/route.service';
@@ -16,7 +16,7 @@ interface EditRoutePageProps {
 
 const EditRoutePage: React.FC<EditRoutePageProps> = ({ params }) => {
   const router = useRouter();
-  const routeId = params.id;
+  const { id: routeId } = use(params as unknown as Promise<{ id: string }>);
   const [routeData, setRouteData] = useState<Route | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -31,7 +31,7 @@ const EditRoutePage: React.FC<EditRoutePageProps> = ({ params }) => {
       } catch (err: any) {
         setError(err.message || 'Erro ao carregar os dados da rota.');
         console.error('Erro ao carregar rota para edição:', err);
-        if (err.message.includes('Unauthorized') || err.message.includes('Route not found')) {
+        if (err.message.includes('Route not found')) {
           router.push('/dashboard');
         }
       } finally {
@@ -64,10 +64,6 @@ const EditRoutePage: React.FC<EditRoutePageProps> = ({ params }) => {
     } catch (err: any) {
       setError(err.message || 'Erro ao salvar a rota.');
       console.error('Erro ao salvar rota:', err);
-      if (err.message.includes('Unauthorized')) {
-        authService.logout();
-        router.push('/auth/login');
-      }
     } finally {
       setIsSaving(false);
     }

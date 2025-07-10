@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { authController } from '../controllers/auth.controller';
 import { validate, registerSchema, loginSchema } from '../utils/validators';
+import { authMiddleware } from '../middlewares/auth.middleware';
 
 const authRouter = Router();
 
@@ -43,5 +44,21 @@ authRouter.post('/register', validate(registerSchema), authController.register);
  *         description: Credenciais inválidas
  */
 authRouter.post('/login', validate(loginSchema), authController.login);
+
+/**
+ * @swagger
+ * /api/auth/validate:
+ *   get:
+ *     summary: Valida o token de autenticação
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Token válido
+ *       401:
+ *         description: Token inválido
+ */
+authRouter.get('/validate', authMiddleware, authController.validate);
 
 export default authRouter;

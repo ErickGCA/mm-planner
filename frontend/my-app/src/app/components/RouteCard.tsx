@@ -31,7 +31,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ route, onDelete }) => {
           borderRadius: '4px',
           fontSize: '0.9em'
         }}>
-          Ver Detalhes
+          <span style={{ color: '#ffffff' }}>Ver Detalhes</span>
         </Link>
         <Link href={`/routes/${route.id}/edit`} style={{
           padding: '8px 12px',

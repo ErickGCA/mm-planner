@@ -16,10 +16,17 @@ const LoginPage: React.FC = () => {
     setError(null);
     try {
       const response = await authService.login(data);
+      
+      // Salvar token e usuário
       authService.setToken(response.token);
       authService.setUser(response.user);
+      
       alert('Login realizado com sucesso!');
-      router.push('/dashboard');
+      
+      // Aguardar um pouco e usar replace para evitar conflitos
+      setTimeout(() => {
+        router.replace('/dashboard');
+      }, 500);
     } catch (err: any) {
       setError(err.message || 'Erro desconhecido ao fazer login.');
     } finally {

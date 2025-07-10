@@ -29,10 +29,6 @@ const DestinationsPage: React.FC = () => {
       } catch (err: any) {
         setError(err.message || 'Erro ao carregar destinos.');
         console.error('Erro ao carregar destinos:', err);
-        if (err.message.includes('Unauthorized')) {
-          authService.logout();
-          router.push('/auth/login');
-        }
       } finally {
         setIsLoading(false);
       }

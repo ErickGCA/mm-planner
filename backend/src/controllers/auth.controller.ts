@@ -59,4 +59,13 @@ export const authController = {
       res.status(500).json({ message: 'Erro interno do servidor' });
     }
   }) as RequestHandler,
+
+  validate: (async (req: Request, res: Response) => {
+    try {
+      res.status(200).json({ message: 'Token válido' });
+    } catch (error: any) {
+      console.error('Token validation error:', error);
+      res.status(401).json({ message: 'Token inválido' });
+    }
+  }) as RequestHandler,
 };

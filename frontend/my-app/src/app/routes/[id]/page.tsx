@@ -1,82 +1,76 @@
 "use client";
 
-import polyline from '@mapbox/polyline';
-
 import React, { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from 'next/dynamic';
-import { routeService, Route, RouteCalculationResult } from "../../services/route.service";
+import polyline from '@mapbox/polyline';
+import { routeService, Route, RouteLeg, RouteCalculationResult } from "../../services/route.service";
 import Button from "../../components/Button";
 import Link from "next/link";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import styles from "./details-route.module.css";
 
-
 const RouteMap = dynamic(() => import('../../components/RouteMap'), {
   ssr: false,
   loading: () => (
-    <div style={{
-      height: '350px',
-      width: '100%',
-      background: '#f0f0f0',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}>
+    <div style={{ height: '400px', width: '100%', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <p>Carregando mapa...</p>
     </div>
   )
 });
+
+interface PathSegment {
+  path: [number, number][];
+  color: string;
+}
 
 interface RouteDetailsPageProps {
   params: { id: string };
 }
 
 const RouteDetailsPage: React.FC<RouteDetailsPageProps> = ({ params }) => {
-  console.log('RouteDetailsPage renderizou!');
   const router = useRouter();
   const { id: routeId } = use(params as unknown as Promise<{ id: string }>);
   const [routeData, setRouteData] = useState<Route | null>(null);
-  const [calculation, setCalculation] = useState<RouteCalculationResult | null>(null);
-  const [routePath, setRoutePath] = useState<[number, number][]>([]);
+  const [calculation, setCalculation] = useState<Omit<RouteCalculationResult, 'legs'> | null>(null);
+  const [legs, setLegs] = useState<RouteLeg[]>([]);
+  const [pathSegments, setPathSegments] = useState<PathSegment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-// Lembre-se de ter o decodificador instalado: npm install @mapbox/polyline
-
-
-// ...
-
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      setIsLoading(true);
-      const fetchedRoute = await routeService.getRouteById(routeId);
-      setRouteData(fetchedRoute);
-
-      // 1. Unica chamada para sua API do Google
-      const calcResult = await routeService.calculateRoute(routeId);
-      setCalculation(calcResult);
-      
-      // 2. Decodifica a linha recebida do Google e atualiza o mapa
-      if (calcResult && calcResult.encodedPolyline) {
-        const decodedPath = polyline.decode(calcResult.encodedPolyline) as [number, number][];
-        setRoutePath(decodedPath);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const fetchedRoute = await routeService.getRouteById(routeId);
+        setRouteData(fetchedRoute);
+  
+        if (fetchedRoute && fetchedRoute.stops.length > 1) {
+          const calcResult = await routeService.calculateRoute(routeId);
+          
+          if (calcResult) {
+            setCalculation({ totalDistance: calcResult.totalDistance, totalDuration: calcResult.totalDuration });
+            setLegs(calcResult.legs || []);
+            
+            if (calcResult.legs) {
+              const colors = ['#0d6efd', '#dc3545', '#198754', '#ffc107', '#6f42c1', '#fd7e14'];
+              const segments = calcResult.legs.map((leg, index) => ({
+                path: polyline.decode(leg.encodedPolyline) as [number, number][],
+                color: colors[index % colors.length]
+              }));
+              setPathSegments(segments);
+            }
+          }
+        }
+      } catch (err: any) {
+        setError(err.message || "Erro ao carregar detalhes da rota.");
+      } finally {
+        setIsLoading(false);
       }
-      
-    } catch (err: any) {
-      setError(err.message || "Erro ao carregar detalhes da rota.");
-      if (err.message?.includes("Unauthorized") || err.message?.includes("Route not found")) {
-        router.push("/dashboard");
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  if (routeId) fetchData();
-}, [routeId, router]);
-
+    };
+    if (routeId) fetchData();
+  }, [routeId, router]);
+  
   const handleDelete = async () => {
     if (!window.confirm("Tem certeza que deseja excluir esta rota?")) return;
     try {
@@ -99,6 +93,8 @@ useEffect(() => {
     );
   }
 
+  const sortedStops = [...routeData.stops].sort((a, b) => a.order - b.order);
+
   return (
     <ProtectedRoute>
       <div className={styles.pageWrapper}>
@@ -113,38 +109,49 @@ useEffect(() => {
               <Button variant="outline" onClick={() => router.push("/dashboard")}>Voltar</Button>
             </div>
           </div>
-          <h3 style={{ color: '#7a0909', marginTop: 0 }}>{routeData.name}</h3>
-          {routeData.description && <p style={{ color: '#333' }}>{routeData.description}</p>}
-          <h4 style={{ marginTop: 30, color: '#7a0909'}}>Destinos:</h4>
-          <ol style={{ paddingLeft: 20 }}>
-            {routeData.stops
-              .sort((a, b) => a.order - b.order)
-              .map((stop) => (
-                <li key={stop.id} style={{ marginBottom: 10, color: '#7a0909'}}>
-                  <strong>{stop.destination.name}</strong> <br />
-                  <span style={{ fontSize: '0.9em', color: '#666' }}>
-                    Lat: {stop.destination.latitude.toFixed(6)}, Lng: {stop.destination.longitude.toFixed(6)}
-                  </span>
-                </li>
-              ))}
-          </ol>
+          <h3 style={{ color: '#7a0909', marginTop: 0, marginBottom: '20px' }}>{routeData.name}</h3>
+          {routeData.description && <p style={{ color: '#333', marginTop: '-10px' }}>{routeData.description}</p>}
+
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '30px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
+            <div style={{ flex: '1.2' }}>
+              <h4 style={{ marginTop: 0, color: '#7a0909'}}>Destinos:</h4>
+              <ol style={{ paddingLeft: 20, margin: 0 }}>
+                {sortedStops.map((stop, index) => (
+                  <li key={stop.id} style={{ marginBottom: 15, color: '#7a0909'}}>
+                    <strong>{stop.destination.name}</strong> <br />
+                    <span style={{ fontSize: '0.9em', color: '#666' }}>
+                      Lat: {stop.destination.latitude.toFixed(6)}, Lng: {stop.destination.longitude.toFixed(6)}
+                    </span>
+                    {legs[index] && (
+                       <div style={{ fontSize: '0.85em', color: '#555', background: '#f8f9fa', padding: '5px 8px', borderRadius: '4px', marginTop: '5px' }}>
+                         <strong>Próximo trecho:</strong> {legs[index].distance} ({legs[index].duration})
+                       </div>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div style={{ flex: '1', borderLeft: '1px solid #eee', paddingLeft: '30px' }}>
+              {calculation && (
+                <div>
+                  <h4 style={{ marginTop: 0, color: '#7a0909'}}>Resumo do Trajeto:</h4>
+                  <p style={{ color: '#7a0909'}}><strong>Distância total:</strong> {calculation.totalDistance}</p>
+                  <p style={{ color: '#7a0909'}}><strong>Duração estimada:</strong> {calculation.totalDuration}</p>
+                </div>
+              )}
+              {error && <p style={{ color: 'red' }}>{error}</p>}
+            </div>
+          </div>
+          
           <RouteMap 
-            points={routeData.stops.map(stop => ({
+            points={sortedStops.map(stop => ({
               latitude: stop.destination.latitude,
               longitude: stop.destination.longitude,
               name: stop.destination.name
             }))} 
-            path={routePath}
+            pathSegments={pathSegments}
           />
-
-          {calculation && (
-            <div style={{ marginTop: 30, color: '#7a0909'}}>
-              <h4>Resumo do Trajeto:</h4>
-              <p><strong>Distância total:</strong> {calculation.totalDistance}</p>
-              <p><strong>Duração estimada:</strong> {calculation.totalDuration}</p>
-            </div>
-          )}
-          {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
       </div>
     </ProtectedRoute>

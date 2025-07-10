@@ -19,12 +19,17 @@ interface LatLng {
   name?: string;
 }
 
-interface RouteMapProps {
-  points: LatLng[];
-  path?: [number, number][]; 
+interface PathSegment {
+  path: [number, number][];
+  color: string;
 }
 
-export default function RouteMap({ points, path }: RouteMapProps) {
+interface RouteMapProps {
+  points: LatLng[];
+  pathSegments?: PathSegment[]; 
+}
+
+export default function RouteMap({ points, pathSegments }: RouteMapProps) {
   if (!points || points.length === 0) {
     return (
       <div style={{ width: '100%', height: 350, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -33,10 +38,10 @@ export default function RouteMap({ points, path }: RouteMapProps) {
     );
   }
 
-  const initialPosition: [number, number] = [points[0].latitude, points[0].longitude];
+  const mapBounds = L.latLngBounds(points.map(p => [p.latitude, p.longitude]));
 
   return (
-    <MapContainer center={initialPosition} zoom={13} style={{ height: '350px', width: '100%' }}>
+    <MapContainer bounds={mapBounds} style={{ height: '400px', width: '100%', marginTop: '20px', borderRadius: '8px' }} scrollWheelZoom={true}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -49,9 +54,9 @@ export default function RouteMap({ points, path }: RouteMapProps) {
         </Marker>
       ))}
 
-      {path && path.length > 0 && (
-        <Polyline pathOptions={{ color: 'green' }} positions={path} />
-      )}
+      {pathSegments?.map((segment, index) => (
+        <Polyline key={index} positions={segment.path} pathOptions={{ color: segment.color, weight: 5 }} />
+      ))}
     </MapContainer>
   );
 }

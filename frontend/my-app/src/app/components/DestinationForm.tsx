@@ -76,7 +76,7 @@ const DestinationForm: React.FC<DestinationFormProps> = ({ initialData, onSubmit
 
     return (
         <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}>
-            <form onSubmit={handleSubmit} style={{ padding: '20px', border: '1px solid #eee', borderRadius: '8px', marginBottom: '20px', boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}>
+            <form onSubmit={handleSubmit} style={{ padding: '20px', border: '1px solid #eee', borderRadius: '8px', marginBottom: '20px', boxShadow: '0 2px 5px rgba(0,0,0,0.05)', color: '#7a0909' }}>
                 <h3 style={{ marginTop: 0 }}>{initialData ? 'Editar Destino' : 'Adicionar Novo Destino'}</h3>
                 
                 <div style={{ marginBottom: '16px' }}>
