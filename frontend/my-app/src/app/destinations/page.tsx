@@ -6,13 +6,13 @@ import { useRouter } from 'next/navigation';
 import { authService } from '../services/auth.services';
 import { destinationService, DestinationCreationData, DestinationUpdateData } from '../services/destination.service';
 import { Destination } from '../services/route.service';
-import DestinationForm from '../components/DestinationForm';
-import DestinationCard from '../components/DestinationCard';
-import Button from '../components/Button';
+import DestinationForm from '../components/destinations/DestinationForm';
+import DestinationCard from '../components/destinations/DestinationCard';
+import Button from '../components/ui/Button';
 import Link from 'next/link';
-import ProtectedRoute from '../components/ProtectedRoute';
-import Toast from '../components/Toast';
-import ConfirmModal from '../components/ConfirmModal';
+import ProtectedRoute from '../components/auth/ProtectedRoute';
+import Toast from '../components/ui/Toast';
+import ConfirmModal from '../components/ui/ConfirmModal';
 import styles from './destinations.module.css';
 
 const DestinationsPage: React.FC = () => {

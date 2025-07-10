@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { Destination } from '../services/route.service';
-import Button from './Button';
+import { Destination } from '../../services/route.service';
+import Button from '../ui/Button';
 
 interface DestinationCardProps {
   destination: Destination;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Button from './ui/Button';
-import { DestinationCreationData, DestinationUpdateData } from '../services/destination.service';
-import { Destination } from '../services/route.service';
+import Button from '../ui/Button';
+import { DestinationCreationData, DestinationUpdateData } from '../../services/destination.service';
+import { Destination } from '../../services/route.service';
 import { APIProvider, Map, AdvancedMarker, useMapsLibrary } from '@vis.gl/react-google-maps';
 
 const mapContainerStyle = {

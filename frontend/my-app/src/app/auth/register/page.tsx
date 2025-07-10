@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import AuthForm from '../../components/AuthForm';
+import AuthForm from '../../components/auth/AuthForm';
 import { authService } from '../../services/auth.services';
-import Toast from '../../components/Toast';
+import Toast from '../../components/ui/Toast';
 import styles from './register.module.css';
 
 const RegisterPage: React.FC = () => {

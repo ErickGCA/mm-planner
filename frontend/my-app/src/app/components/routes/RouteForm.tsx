@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Input from './ui/Input';
-import Button from './ui/Button';
+import Input from '../ui/Input';
+import Button from '../ui/Button';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
-import DraggableDestinationItem from './DraggableDestinationItem';
-import { Destination, Route, RouteStopInput } from '../services/route.service';
-import { destinationService } from '../services/destination.service';
+import DraggableDestinationItem from '../destinations/DraggableDestinationItem';
+import { Destination, Route, RouteStopInput } from '../../services/route.service';
+import { destinationService } from '../../services/destination.service';
 
 interface RouteFormProps {
   initialData?: Route;

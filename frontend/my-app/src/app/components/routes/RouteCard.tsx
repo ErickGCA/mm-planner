@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from '../services/route.service';
+import { Route } from '../../services/route.service';
 import Link from 'next/link';
 
 interface RouteCardProps {

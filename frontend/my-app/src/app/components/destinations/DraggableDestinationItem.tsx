@@ -1,7 +1,7 @@
 import React from 'react';
 import { DraggableProvided, DraggableStateSnapshot } from '@hello-pangea/dnd';
-import { Destination } from '../services/route.service';
-import Button from './ui/Button';
+import { Destination } from '../../services/route.service';
+import Button from '../ui/Button';
 
 interface DraggableDestinationItemProps {
   destination: Destination;

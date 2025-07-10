@@ -5,12 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authService } from '../services/auth.services';
 import { routeService, Route } from '../services/route.service';
-import RouteCard from '../components/RouteCard';
-import Button from '../components/Button';
+import RouteCard from '../components/routes/RouteCard';
+import Button from '../components/ui/Button';
 import Link from 'next/link';
-import ProtectedRoute from '../components/ProtectedRoute';
-import Toast from '../components/Toast';
-import ConfirmModal from '../components/ConfirmModal';
+import ProtectedRoute from '../components/auth/ProtectedRoute';
+import Toast from '../components/ui/Toast';
+import ConfirmModal from '../components/ui/ConfirmModal';
 import styles from './dashboard.module.css';
 
 const DashboardPage: React.FC = () => {
