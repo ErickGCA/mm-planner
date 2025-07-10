@@ -201,3 +201,7 @@ img {
     padding: 0 10px;
   }
 }
+
+[data-nextjs-dev-overlay] {
+  display: none !important;
+}

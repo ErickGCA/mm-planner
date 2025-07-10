@@ -30,19 +30,24 @@ services:
     depends_on:
       - db
       
-  #frontend:
-   # container_name: trip_planner_frontend
-    # build:
-    #  context: ./frontend/my-app
-    # ports:
-    #  - "3000:3000"
-    # environment:
-    #  - NEXT_PUBLIC_API_URL=http://api:3333
-    # volumes:
-    #  - ./frontend/my-app:/usr/src/app
-    #  - /usr/src/app/node_modules
-    # depends_on:
-    #  - api
+  frontend:
+    container_name: trip_planner_frontend
+    build:
+      context: ./frontend/my-app
+      target: development
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api:3333
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./frontend/my-app:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    depends_on:
+      - api
+    command: npm run dev
 
 volumes:
   postgres_data:
