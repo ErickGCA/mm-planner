@@ -120,7 +120,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, isLoading, error })
                   fontSize: 18
                 }}
               >
-                {showPassword ? '😶‍🌫️' : '👁️'}
+                {showPassword ? ':o' : ':O'}
               </button>
             </div>
             {touched.password && validation.password && (

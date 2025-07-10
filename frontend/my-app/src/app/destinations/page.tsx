@@ -12,6 +12,7 @@ import Button from '../components/Button';
 import Link from 'next/link';
 import ProtectedRoute from '../components/ProtectedRoute';
 import Toast from '../components/Toast';
+import ConfirmModal from '../components/ConfirmModal';
 import styles from './destinations.module.css';
 
 const DestinationsPage: React.FC = () => {
@@ -21,6 +22,8 @@ const DestinationsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [editingDestination, setEditingDestination] = useState<Destination | null>(null);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [destinationToDelete, setDestinationToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDestinations = async () => {
@@ -68,18 +71,24 @@ const DestinationsPage: React.FC = () => {
   };
 
   const handleDeleteClick = async (id: string) => {
-    if (!confirm('Tem certeza que deseja deletar este destino? Isso pode afetar rotas existentes.')) {
-      return;
-    }
+    setDestinationToDelete(id);
+    setConfirmOpen(true);
+  };
+
+  const confirmDeleteDestination = async () => {
+    if (!destinationToDelete) return;
     setError(null);
     try {
-      await destinationService.deleteDestination(id);
-      setDestinations(destinations.filter(d => d.id !== id));
+      await destinationService.deleteDestination(destinationToDelete);
+      setDestinations(destinations.filter(d => d.id !== destinationToDelete));
       setToast({ message: 'Destino deletado com sucesso!', type: 'success' });
     } catch (err: any) {
       setError(err.message || 'Erro ao deletar destino.');
       setToast({ message: err.message || 'Erro ao deletar destino.', type: 'error' });
       console.error('Erro ao deletar destino:', err);
+    } finally {
+      setConfirmOpen(false);
+      setDestinationToDelete(null);
     }
   };
 
@@ -159,6 +168,15 @@ const DestinationsPage: React.FC = () => {
             onClose={() => setToast(null)}
           />
         )}
+        <ConfirmModal
+          open={confirmOpen}
+          title="Confirmar exclusão"
+          message="Tem certeza que deseja deletar este destino? Isso pode afetar rotas existentes."
+          confirmText="Deletar"
+          cancelText="Cancelar"
+          onConfirm={confirmDeleteDestination}
+          onCancel={() => { setConfirmOpen(false); setDestinationToDelete(null); }}
+        />
       </div>
     );
   };

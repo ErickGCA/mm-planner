@@ -50,9 +50,9 @@ model Destination {
 model RouteStop {
   id            String       @id @default(uuid())
   order         Int
-  route         Route        @relation(fields: [routeId], references: [id])
+  route         Route        @relation(fields: [routeId], references: [id], onDelete: Cascade)
   routeId       String
-  destination   Destination  @relation(fields: [destinationId], references: [id])
+  destination   Destination  @relation(fields: [destinationId], references: [id], onDelete: Cascade)
   destinationId String
 
   // pssivel armazenamento de tempo, evitando recalcular

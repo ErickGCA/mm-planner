@@ -9,6 +9,8 @@ import Button from "../../components/Button";
 import Link from "next/link";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import styles from "./details-route.module.css";
+import Toast from '../../components/Toast';
+import ConfirmModal from '../../components/ConfirmModal';
 
 const RouteMap = dynamic(() => import('../../components/RouteMap'), {
   ssr: false,
@@ -37,6 +39,8 @@ const RouteDetailsPage: React.FC<RouteDetailsPageProps> = ({ params }) => {
   const [pathSegments, setPathSegments] = useState<PathSegment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,14 +75,19 @@ const RouteDetailsPage: React.FC<RouteDetailsPageProps> = ({ params }) => {
     if (routeId) fetchData();
   }, [routeId, router]);
   
-  const handleDelete = async () => {
-    if (!window.confirm("Tem certeza que deseja excluir esta rota?")) return;
+  const handleDelete = () => {
+    setConfirmOpen(true);
+  };
+
+  const confirmDeleteRoute = async () => {
     try {
       await routeService.deleteRoute(routeId);
-      alert("Rota excluída com sucesso!");
-      router.push("/dashboard");
+      setToast({ message: 'Rota excluída com sucesso!', type: 'success' });
+      router.push('/dashboard');
     } catch (err: any) {
-      alert(err.message || "Erro ao excluir rota.");
+      setToast({ message: err.message || 'Erro ao excluir rota.', type: 'error' });
+    } finally {
+      setConfirmOpen(false);
     }
   };
 
@@ -154,6 +163,22 @@ const RouteDetailsPage: React.FC<RouteDetailsPageProps> = ({ params }) => {
           />
         </div>
       </div>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+      <ConfirmModal
+        open={confirmOpen}
+        title="Confirmar exclusão"
+        message="Tem certeza que deseja excluir esta rota?"
+        confirmText="Excluir"
+        cancelText="Cancelar"
+        onConfirm={confirmDeleteRoute}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </ProtectedRoute>
   );
 };

@@ -9,6 +9,8 @@ import RouteCard from '../components/RouteCard';
 import Button from '../components/Button';
 import Link from 'next/link';
 import ProtectedRoute from '../components/ProtectedRoute';
+import Toast from '../components/Toast';
+import ConfirmModal from '../components/ConfirmModal';
 import styles from './dashboard.module.css';
 
 const DashboardPage: React.FC = () => {
@@ -17,6 +19,9 @@ const DashboardPage: React.FC = () => {
   const [routes, setRoutes] = useState<Route[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [routeToDelete, setRouteToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     const user = authService.getUser();
@@ -29,6 +34,7 @@ const DashboardPage: React.FC = () => {
         setRoutes(fetchedRoutes);
       } catch (err: any) {
         setError(err.message || 'Erro ao carregar rotas.');
+        setToast({ message: err.message || 'Erro ao carregar rotas.', type: 'error' });
       } finally {
         setIsLoading(false);
       }
@@ -38,16 +44,23 @@ const DashboardPage: React.FC = () => {
   }, [router]);
 
   const handleDeleteRoute = async (routeId: string) => {
-    if (!confirm('Tem certeza que deseja deletar esta rota?')) {
-      return;
-    }
+    setRouteToDelete(routeId);
+    setConfirmOpen(true);
+  };
+
+  const confirmDeleteRoute = async () => {
+    if (!routeToDelete) return;
     try {
-      await routeService.deleteRoute(routeId);
-      setRoutes(routes.filter(route => route.id !== routeId));
-      alert('Rota deletada com sucesso!');
+      await routeService.deleteRoute(routeToDelete);
+      setRoutes(routes.filter(route => route.id !== routeToDelete));
+      setToast({ message: 'Rota deletada com sucesso!', type: 'success' });
     } catch (err: any) {
       setError(err.message || 'Erro ao deletar rota.');
+      setToast({ message: err.message || 'Erro ao deletar rota.', type: 'error' });
       console.error('Erro ao deletar rota:', err);
+    } finally {
+      setConfirmOpen(false);
+      setRouteToDelete(null);
     }
   };
 
@@ -112,6 +125,22 @@ const DashboardPage: React.FC = () => {
             </Link>
           </div>
         </div>
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
+        <ConfirmModal
+          open={confirmOpen}
+          title="Confirmar exclusão"
+          message="Tem certeza que deseja deletar esta rota?"
+          confirmText="Deletar"
+          cancelText="Cancelar"
+          onConfirm={confirmDeleteRoute}
+          onCancel={() => { setConfirmOpen(false); setRouteToDelete(null); }}
+        />
       </div>
     );
   };
