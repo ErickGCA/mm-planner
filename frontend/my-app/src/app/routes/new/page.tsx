@@ -8,12 +8,14 @@ import { authService } from '../../services/auth.services';
 import Link from 'next/link';
 import Button from '../../components/Button';
 import ProtectedRoute from '../../components/ProtectedRoute';
+import Toast from '../../components/Toast';
 import styles from './new-route.module.css';
 
 const NewRoutePage: React.FC = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   const handleSubmit = async (
     routeData: RouteCreationData,
@@ -26,10 +28,14 @@ const NewRoutePage: React.FC = () => {
       if (stops.length > 0) {
         await routeService.addStopsToRoute(newRoute.id, stops);
       }
-      alert('Rota criada com sucesso!');
-      router.push('/dashboard');
+      setToast({ message: 'Rota criada com sucesso!', type: 'success' });
+      setTimeout(() => {
+        setToast(null);
+        router.push('/dashboard');
+      }, 1200);
     } catch (err: any) {
       setError(err.message || 'Erro ao criar a rota.');
+      setToast({ message: err.message || 'Erro ao criar a rota.', type: 'error' });
       console.error('Erro ao criar rota:', err);
     } finally {
       setIsLoading(false);
@@ -50,6 +56,13 @@ const NewRoutePage: React.FC = () => {
           </div>
           <RouteForm onSubmit={handleSubmit} isLoading={isLoading} error={error} />
         </div>
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
       </div>
     );
   };

@@ -11,6 +11,7 @@ import DestinationCard from '../components/DestinationCard';
 import Button from '../components/Button';
 import Link from 'next/link';
 import ProtectedRoute from '../components/ProtectedRoute';
+import Toast from '../components/Toast';
 import styles from './destinations.module.css';
 
 const DestinationsPage: React.FC = () => {
@@ -19,6 +20,7 @@ const DestinationsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingDestination, setEditingDestination] = useState<Destination | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     const fetchDestinations = async () => {
@@ -28,6 +30,7 @@ const DestinationsPage: React.FC = () => {
         setDestinations(fetchedDestinations);
       } catch (err: any) {
         setError(err.message || 'Erro ao carregar destinos.');
+        setToast({ message: err.message || 'Erro ao carregar destinos.', type: 'error' });
         console.error('Erro ao carregar destinos:', err);
       } finally {
         setIsLoading(false);
@@ -44,15 +47,16 @@ const DestinationsPage: React.FC = () => {
       if (editingDestination) {
         const updatedDestination = await destinationService.updateDestination(editingDestination.id, data);
         setDestinations(destinations.map(d => (d.id === updatedDestination.id ? updatedDestination : d)));
-        alert('Destino atualizado com sucesso!');
+        setToast({ message: 'Destino atualizado com sucesso!', type: 'success' });
         setEditingDestination(null);
       } else {
         const newDestination = await destinationService.createDestination(data as DestinationCreationData);
         setDestinations([newDestination, ...destinations]);
-        alert('Destino criado com sucesso!');
+        setToast({ message: 'Destino criado com sucesso!', type: 'success' });
       }
     } catch (err: any) {
       setError(err.message || 'Erro ao salvar destino.');
+      setToast({ message: err.message || 'Erro ao salvar destino.', type: 'error' });
       console.error('Erro ao salvar destino:', err);
     } finally {
       setIsLoading(false);
@@ -71,9 +75,10 @@ const DestinationsPage: React.FC = () => {
     try {
       await destinationService.deleteDestination(id);
       setDestinations(destinations.filter(d => d.id !== id));
-      alert('Destino deletado com sucesso!');
+      setToast({ message: 'Destino deletado com sucesso!', type: 'success' });
     } catch (err: any) {
       setError(err.message || 'Erro ao deletar destino.');
+      setToast({ message: err.message || 'Erro ao deletar destino.', type: 'error' });
       console.error('Erro ao deletar destino:', err);
     }
   };
@@ -147,6 +152,13 @@ const DestinationsPage: React.FC = () => {
             </div>
           )}
         </div>
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
+        )}
       </div>
     );
   };

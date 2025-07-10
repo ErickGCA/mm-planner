@@ -13,9 +13,26 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, isLoading, error })
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [touched, setTouched] = useState<{ email: boolean; password: boolean; name: boolean }>({ email: false, password: false, name: false });
+  const [validation, setValidation] = useState<{ email?: string; password?: string; name?: string }>({});
+
+  const validate = () => {
+    const v: { email?: string; password?: string; name?: string } = {};
+    if (type === 'register' && !name.trim()) v.name = 'Preencha seu nome completo';
+    if (!email.trim()) v.email = 'Preencha seu email';
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) v.email = 'Digite um email válido';
+    if (!password) v.password = 'Preencha sua senha';
+    else if (password.length < 6) v.password = 'A senha deve ter pelo menos 6 caracteres';
+    return v;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setTouched({ email: true, password: true, name: true });
+    const v = validate();
+    setValidation(v);
+    if (Object.keys(v).length > 0) return;
     if (type === 'register') {
       onSubmit({ name, email, password });
     } else {
@@ -36,7 +53,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, isLoading, error })
           }
         </p>
 
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form onSubmit={handleSubmit} className={styles.form} noValidate>
           {type === 'register' && (
             <div className={styles.inputGroup}>
               <label htmlFor="name" className={styles.label}>Nome completo</label>
@@ -45,10 +62,14 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, isLoading, error })
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                onBlur={() => setTouched(t => ({ ...t, name: true }))}
                 className={styles.input}
                 placeholder="Digite seu nome completo"
-                required
+                autoComplete="name"
               />
+              {touched.name && validation.name && (
+                <span className={styles.validation}>{validation.name}</span>
+              )}
             </div>
           )}
 
@@ -59,23 +80,52 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit, isLoading, error })
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => setTouched(t => ({ ...t, email: true }))}
               className={styles.input}
               placeholder="Digite seu email"
-              required
+              autoComplete="email"
             />
+            {touched.email && validation.email && (
+              <span className={styles.validation}>{validation.email}</span>
+            )}
           </div>
 
           <div className={styles.inputGroup}>
             <label htmlFor="password" className={styles.label}>Senha</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={styles.input}
-              placeholder="Digite sua senha"
-              required
-            />
+            <div style={{ position: 'relative' }}>
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onBlur={() => setTouched(t => ({ ...t, password: true }))}
+                className={styles.input}
+                placeholder="Digite sua senha"
+                autoComplete={type === 'login' ? 'current-password' : 'new-password'}
+              />
+              <button
+                type="button"
+                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                onClick={() => setShowPassword(s => !s)}
+                style={{
+                  position: 'absolute',
+                  right: 12,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  color: '#7a0909',
+                  fontSize: 18
+                }}
+              >
+                {showPassword ? '😶‍🌫️' : '👁️'}
+              </button>
+            </div>
+            {touched.password && validation.password && (
+              <span className={styles.validation}>{validation.password}</span>
+            )}
           </div>
 
           {error && <div className={styles.error}>{error}</div>}

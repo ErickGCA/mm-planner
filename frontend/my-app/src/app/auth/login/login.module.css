@@ -204,6 +204,15 @@
   to { transform: rotate(360deg); }
 }
 
+.validation {
+  color: #b91c1c;
+  font-size: 0.95rem;
+  margin-top: 4px;
+  margin-left: 2px;
+  display: block;
+  font-weight: 500;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .container {
