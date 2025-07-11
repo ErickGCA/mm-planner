@@ -35,7 +35,7 @@ Este projeto permite que usuários cadastrem destinos, criem rotas personalizada
 ## Estrutura do Projeto
 
 ```
-travel-planner/
+mm-planner/
 ├── backend/                 # API Node.js
 │   ├── src/
 │   │   ├── controllers/     # Controladores da API
@@ -67,8 +67,8 @@ travel-planner/
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/ErickGCA/travel-planner.git
-cd travel-planner
+git clone https://github.com/ErickGCA/mm-planner.git
+cd mm-planner
 ```
 
 ### 2. Configure as variáveis de ambiente
