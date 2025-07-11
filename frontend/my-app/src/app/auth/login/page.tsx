@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import AuthForm from '../../components/auth/AuthForm';
-import { authService } from '../../services/auth.services';
-import Toast from '../../components/ui/Toast';
+import AuthForm from '../../../components/auth/AuthForm';
+import { authService } from '../../../services/auth.services';
+import Toast from '../../../components/ui/Toast';
 import styles from './login.module.css';
 
 const LoginPage: React.FC = () => {

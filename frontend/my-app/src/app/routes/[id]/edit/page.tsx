@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
-import { authService } from '../../../services/auth.services';
-import { routeService, Route, RouteStopInput } from '../../../services/route.service';
-import RouteForm from '../../../components/routes/RouteForm';
+import { authService } from '../../../../services/auth.services';
+import { routeService, Route, RouteStopInput } from '../../../../services/route.service';
+import RouteForm from '../../../../components/routes/RouteForm';
 import Link from 'next/link';
-import Button from '../../../components/ui/Button';
-import ProtectedRoute from '../../../components/auth/ProtectedRoute';
+import Button from '../../../../components/ui/Button';
+import ProtectedRoute from '../../../../components/auth/ProtectedRoute';
 import styles from './edit-route.module.css';
 
 interface EditRoutePageProps {

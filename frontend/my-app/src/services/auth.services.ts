@@ -1,4 +1,4 @@
-import { api } from '../lib/api';
+import { api } from '../app/lib/api';
 
 interface UserData {
   email: string;
@@ -42,12 +42,10 @@ export const authService = {
   },
 
   logout() {
-    // Limpar completamente o cache
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     sessionStorage.clear();
     
-    // Limpar cookies se houver
     document.cookie.split(";").forEach(function(c) { 
       document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
     });
@@ -81,7 +79,6 @@ export const authService = {
       const token = this.getToken();
       if (!token) return false;
       
-      // Fazer uma requisição para validar o token
       await api.get('/auth/validate');
       return true;
     } catch (error) {

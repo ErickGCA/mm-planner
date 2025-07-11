@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import styles from '../../auth/login/login.module.css';
+import styles from '../../app/auth/login/login.module.css';
 
 interface AuthFormProps {
   type: 'login' | 'register';

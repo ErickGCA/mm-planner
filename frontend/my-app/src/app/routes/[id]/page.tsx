@@ -4,15 +4,15 @@ import React, { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from 'next/dynamic';
 import polyline from '@mapbox/polyline';
-import { routeService, Route, RouteLeg, RouteCalculationResult } from "../../services/route.service";
-import Button from "../../components/ui/Button";
+import { routeService, Route, RouteLeg, RouteCalculationResult } from "../../../services/route.service";
+import Button from "../../../components/ui/Button";
 import Link from "next/link";
-import ProtectedRoute from "../../components/auth/ProtectedRoute";
+import ProtectedRoute from "../../../components/auth/ProtectedRoute";
 import styles from "./details-route.module.css";
-import Toast from '../../components/ui/Toast';
-import ConfirmModal from '../../components/ui/ConfirmModal';
+import Toast from "../../../components/ui/Toast";
+import ConfirmModal from "../../../components/ui/ConfirmModal";
 
-const RouteMap = dynamic(() => import('../../components/routes/RouteMap'), {
+const RouteMap = dynamic(() => import("../../../components/routes/RouteMap"), {
   ssr: false,
   loading: () => (
     <div style={{ height: '400px', width: '100%', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

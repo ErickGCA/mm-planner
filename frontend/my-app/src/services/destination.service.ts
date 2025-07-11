@@ -1,4 +1,4 @@
-import { api } from '../lib/api';
+import { api } from '../app/lib/api';
 import { Destination } from './route.service';
 
 export interface DestinationCreationData {

@@ -2,13 +2,13 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { routeService, RouteCreationData, RouteStopInput } from '../../services/route.service';
-import RouteForm from '../../components/routes/RouteForm';
-import { authService } from '../../services/auth.services';
+import { routeService, RouteCreationData, RouteStopInput } from '../../../services/route.service';
+import RouteForm from '../../../components/routes/RouteForm';
+import { authService } from '../../../services/auth.services';
 import Link from 'next/link';
-import Button from '../../components/ui/Button';
-import ProtectedRoute from '../../components/auth/ProtectedRoute';
-import Toast from '../../components/ui/Toast';
+import Button from '../../../components/ui/Button';
+import ProtectedRoute from '../../../components/auth/ProtectedRoute';
+import Toast from '../../../components/ui/Toast';
 import styles from './new-route.module.css';
 
 const NewRoutePage: React.FC = () => {
